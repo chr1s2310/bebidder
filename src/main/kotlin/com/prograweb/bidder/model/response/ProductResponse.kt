@@ -20,7 +20,7 @@ class ProductResponse(
 
         val href: String,
 
-        val category: CategoryResponse,
+        val categoryPublicId: UUID,
 
         val images: List<ProductImageResponse>
 )

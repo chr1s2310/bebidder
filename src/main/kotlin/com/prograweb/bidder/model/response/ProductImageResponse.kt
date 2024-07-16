@@ -8,5 +8,5 @@ class ProductImageResponse (
 
         val publicId: UUID,
 
-        val image: ByteArray
+        val image: String
 )
