@@ -32,7 +32,7 @@ object ProductMapper {
             features = this.features,
             price = this.price,
             href = this.href,
-            categoryPublicId = this.categoryEntity.publicId,
+            category = this.categoryEntity.name,
             images = this.images.map { it.toResponse() }
         )
     }

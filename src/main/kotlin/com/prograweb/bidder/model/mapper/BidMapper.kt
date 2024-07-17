@@ -10,7 +10,7 @@ object BidMapper {
 
     fun BidRequest.toEntity(productEntity: ProductEntity) : BidEntity {
         return BidEntity(
-            amount = this.amount,
+            amount = productEntity.price,
             productEntity = productEntity
         )
     }
@@ -28,7 +28,7 @@ object BidMapper {
 
     fun BidRequest.toPushBid(bidEntity: BidEntity) : BidEntity {
         return BidEntity(
-            amount = this.amount,
+            amount = bidEntity.amount + this.amount,
             productEntity = bidEntity.productEntity,
             lastUserBid = this.lastUserBid
         )
