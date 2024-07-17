@@ -9,5 +9,9 @@ class UserResponse (
 
     val name: String,
 
+    val lastname: String,
+
+    val username: String,
+
     val password: String
 )

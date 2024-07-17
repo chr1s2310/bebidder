@@ -36,4 +36,14 @@ class UserController (@Autowired private val userService: UserServiceInterface) 
     fun updateUser(@Valid @RequestBody user: UserRequest): ResponseEntity<UserResponse> {
         return ResponseEntity.ok(userService.updateUser(user))
     }
+
+    @PostMapping("/login")
+    fun loginUser(@Valid @RequestBody user: UserRequest): ResponseEntity<UserResponse> {
+        return ResponseEntity.ok(userService.login(user.email, user.password))
+    }
+
+    @PostMapping("/signup")
+    fun registerUser(@Valid @RequestBody user: UserRequest): ResponseEntity<UserResponse> {
+        return ResponseEntity.ok(userService.registerUser(user))
+    }
 }

@@ -12,6 +12,8 @@ interface UserServiceInterface {
     fun updateUser(user: UserRequest): UserResponse
     fun deleteUser(id: Long)
 
+    fun login(email: String, password: String): UserResponse? //login de api
+
     //fun findByEmail(email: String): Optional<SecurityProperties.User>
     //fun existsByEmail(email: String): Boolean?
     //fun existsByProviderId(providerId: String): Boolean?

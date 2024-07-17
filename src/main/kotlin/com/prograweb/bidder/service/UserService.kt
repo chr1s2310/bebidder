@@ -7,10 +7,14 @@ import com.prograweb.bidder.model.request.UserRequest
 import com.prograweb.bidder.model.response.UserResponse
 import com.prograweb.bidder.repository.UserRepository
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.security.core.userdetails.UserDetails
+import org.springframework.security.core.userdetails.UserDetailsService
+import org.springframework.security.core.userdetails.UsernameNotFoundException
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
 import org.springframework.stereotype.Service
 
 @Service
-class UserService(@Autowired private val userRepository: UserRepository): UserServiceInterface {
+class UserService(@Autowired private val userRepository: UserRepository, private val passwordEncoder: BCryptPasswordEncoder): UserServiceInterface, UserDetailsService {
 
     override fun getAllUsers(): List<UserResponse> {
         try {
@@ -51,6 +55,23 @@ class UserService(@Autowired private val userRepository: UserRepository): UserSe
         } catch (e: Exception) {
             throw e
         }
+    }
+
+    override fun loadUserByUsername(email: String): UserDetails {
+        val user = userRepository.findByEmail(email) ?: throw UsernameNotFoundException("Usuario no encontrado")
+        return org.springframework.security.core.userdetails.User
+            .withUsername(user.email)
+            .password(user.password)
+            .authorities("USER")
+            .build()
+    }
+
+    override fun login(email: String, password: String): UserResponse {
+        val user = userRepository.findByEmail(email) ?: throw RuntimeException("Usuario no encontrado")
+        if (!passwordEncoder.matches(password, user.password)) {
+            throw RuntimeException("Contraseña incorrecta")
+        }
+        return user.toResponse()
     }
 
 }

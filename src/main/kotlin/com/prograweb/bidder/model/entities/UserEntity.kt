@@ -20,9 +20,15 @@ data class UserEntity (
     val name: String,
 
     @Column(nullable = false)
-    val provider: String?, // "local", "facebook", "google"
+    val lastname: String,
 
     @Column(nullable = false)
-    val providerId: String? // Getters y setters
+    val username: String,
+
+    @Column(nullable = false)
+    val provider: String?, // "local", "facebook", "google"
+
+    //@Column(nullable = false)
+    //val providerId: String? // Getters y setters
 
 ): AuditModel()

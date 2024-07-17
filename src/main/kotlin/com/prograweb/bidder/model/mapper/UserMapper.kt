@@ -10,10 +10,11 @@ object UserMapper {
     fun UserRequest.toEntity() : UserEntity {
         return UserEntity(
             name = this.name,
+            lastname = this.lastname,
+            username = this.username,
             email = this.email,
             password = passwordEncoder.encode(this.password),
             provider = this.provider,
-            providerId = this.providerId
         )
     }
 
@@ -21,6 +22,8 @@ object UserMapper {
         return UserResponse(
             id = this.id!!,
             name = this.name,
+            lastname = this.lastname,
+            username = this.username,
             email = this.email,
             password = this.password
         )
@@ -30,10 +33,11 @@ object UserMapper {
         return UserEntity(
             id = userEntity.id,
             name = this.name,
+            lastname = this.lastname,
+            username = this.username,
             email = this.email,
             password = userEntity.password,
-            provider = this.provider,
-            providerId = this.providerId
+            provider = this.provider
         )
     }
 }
