@@ -1,6 +1,7 @@
 package com.prograweb.bidder.model.entities
 
 import jakarta.persistence.*
+import java.util.UUID
 
 @Entity
 @Table(name = "users")
@@ -8,22 +9,31 @@ data class UserEntity (
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    val id: Long? = null,
+    var id: Long? = null,
+
+    @Column(nullable = false)
+    var publicId: UUID = UUID.randomUUID(),
 
     @Column(nullable = false, unique = true)
-    val email: String,
+    var email: String,
 
     @Column(nullable = false)
-    val password: String,
+    var password: String,
 
     @Column(nullable = false)
-    val name: String,
+    var name: String,
 
     @Column(nullable = false)
-    val lastname: String,
+    var lastname: String,
 
     @Column(nullable = false)
-    val username: String,
+    var username: String,
+
+    @OneToMany(mappedBy = "userBid", orphanRemoval = true, cascade = [CascadeType.ALL])
+    var bids: MutableList<BidEntity> = mutableListOf(),
+
+    @Column(nullable = false)
+    var active: Boolean = true
 
     //@Column(nullable = false)
     //val provider: String?, // "local", "facebook", "google"

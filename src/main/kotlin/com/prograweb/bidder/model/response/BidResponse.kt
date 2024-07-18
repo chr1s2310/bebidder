@@ -10,9 +10,11 @@ class BidResponse (
 
         val amount: Int,
 
-        val lastUserBid: String? = null,
+        val userBid: String? = null,
 
         val product: ProductResponse,
 
-        val closed: Boolean
+        val closed: Boolean,
+
+        val initBidDate: String
 )

@@ -1,8 +1,10 @@
 package com.prograweb.bidder.service
 
+import com.prograweb.bidder.model.mapper.UserMapper.toDesactivate
 import com.prograweb.bidder.model.mapper.UserMapper.toEntity
 import com.prograweb.bidder.model.mapper.UserMapper.toEntityUpdated
 import com.prograweb.bidder.model.mapper.UserMapper.toResponse
+import com.prograweb.bidder.model.request.UserLoginRequest
 import com.prograweb.bidder.model.request.UserRequest
 import com.prograweb.bidder.model.response.UserResponse
 import com.prograweb.bidder.repository.UserRepository
@@ -12,6 +14,7 @@ import org.springframework.security.core.userdetails.UserDetailsService
 import org.springframework.security.core.userdetails.UsernameNotFoundException
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
 import org.springframework.stereotype.Service
+import java.util.UUID
 
 @Service
 class UserService(@Autowired private val userRepository: UserRepository, private val passwordEncoder: BCryptPasswordEncoder): UserServiceInterface {
@@ -24,9 +27,17 @@ class UserService(@Autowired private val userRepository: UserRepository, private
         }
     }
 
-    override fun getUser(id: Long): UserResponse {
+    override fun getAllActiveUsers(): List<UserResponse> {
         try {
-            val user = userRepository.findByid(id) ?: throw Exception("Usuario no encontrado")
+            return userRepository.findByActive(true).map { it.toResponse() }
+        } catch (e: Exception) {
+            throw e
+        }
+    }
+
+    override fun getUser(publicId: UUID): UserResponse {
+        try {
+            val user = userRepository.findByPublicId(publicId) ?: throw Exception("Usuario no encontrado")
             return user.toResponse()
         } catch (e: Exception) {
             throw e
@@ -42,33 +53,25 @@ class UserService(@Autowired private val userRepository: UserRepository, private
         return userRepository.save(userEntity).toResponse()
     }
 
-    override fun updateUser(user: UserRequest): UserResponse {
-        val userEnt = userRepository.findByEmail(user.email) ?: throw Exception("Usuario no encontrado")
+    override fun updateUser(publicId: UUID, user: UserRequest): UserResponse {
+        val userEnt = userRepository.findByPublicId(publicId) ?: throw Exception("Usuario no encontrado")
         val userEntityUpdate = user.toEntityUpdated(userEnt)
         return userRepository.save(userEntityUpdate).toResponse()
     }
 
-    override fun deleteUser(id: Long) {
+    override fun desactivateUser(publicId: UUID) {
         try {
-            val user = userRepository.findByid(id) ?: throw Exception("Usuario no encontrado")
-            userRepository.delete(user)
+            val user = userRepository.findByPublicId(publicId) ?: throw Exception("Usuario no encontrado")
+            user.toDesactivate()
+            userRepository.save(user)
         } catch (e: Exception) {
             throw e
         }
     }
 
-    /*override fun loadUserByUsername(email: String): UserDetails {
-        val user = userRepository.findByEmail(email) ?: throw UsernameNotFoundException("Usuario no encontrado")
-        return org.springframework.security.core.userdetails.User
-            .withUsername(user.email)
-            .password(user.password)
-            .authorities("USER")
-            .build()
-    }*/
-
-    override fun login(email: String, password: String): UserResponse {
-        val user = userRepository.findByEmail(email) ?: throw RuntimeException("Usuario no encontrado")
-        if (!passwordEncoder.matches(password, user.password)) {
+    override fun login(userLoginRequest: UserLoginRequest): UserResponse {
+        val user = userRepository.findByEmail(userLoginRequest.email) ?: throw RuntimeException("Usuario no encontrado")
+        if (!passwordEncoder.matches(userLoginRequest.password, user.password)) {
             throw RuntimeException("Contraseña incorrecta")
         }
         return user.toResponse()

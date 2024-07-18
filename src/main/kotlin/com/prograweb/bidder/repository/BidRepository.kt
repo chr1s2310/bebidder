@@ -8,7 +8,7 @@ interface BidRepository:JpaRepository<BidEntity, Long> {
 
     fun findByPublicId(publicId: UUID): BidEntity?
 
-    fun findByLastUserBid(lastUserBid: String): List<BidEntity>
+    fun findByUserBidPublicId(userPublicId: UUID): List<BidEntity>
 
     fun findByProductEntityPublicId(publicId: UUID): BidEntity?
 

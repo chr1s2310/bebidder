@@ -7,12 +7,17 @@ import com.prograweb.bidder.model.request.BidRequest
 import com.prograweb.bidder.model.response.BidResponse
 import com.prograweb.bidder.repository.BidRepository
 import com.prograweb.bidder.repository.ProductRepository
+import com.prograweb.bidder.repository.UserRepository
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 import java.util.*
 
 @Service
-class BidService(@Autowired private val bidRepository: BidRepository, @Autowired private val productRepository: ProductRepository) : BidServiceInterface {
+class BidService(
+        @Autowired private val bidRepository: BidRepository,
+        @Autowired private val productRepository: ProductRepository,
+        @Autowired private val userRepository: UserRepository
+) : BidServiceInterface {
 
     override fun getAll(): List<BidResponse> {
         try {
@@ -55,7 +60,8 @@ class BidService(@Autowired private val bidRepository: BidRepository, @Autowired
         try {
             val bidEntity = bidRepository.findByPublicId(publicId) ?: throw Exception("Puja no encontrada")
             val product = productRepository.findByPublicId(bidRequest.productPublicId) ?: throw Exception("Producto no encontrado")
-            val bidUpdated = bidRequest.toPushBid(bidEntity)
+            val user = userRepository.findByPublicId(bidRequest.userPublicId!!) ?: throw Exception("Usuario no encontrado")
+            val bidUpdated = bidRequest.toPushBid(bidEntity, user)
             bidUpdated.productEntity = product
             val bidSaved = bidRepository.save(bidUpdated)
             return bidSaved.toResponse()

@@ -14,6 +14,7 @@ object UserMapper {
             username = this.username,
             email = this.email,
             password = passwordEncoder.encode(this.password),
+                active = true,
             //provider = this.provider,
         )
     }
@@ -21,23 +22,28 @@ object UserMapper {
     fun UserEntity.toResponse() : UserResponse {
         return UserResponse(
             id = this.id!!,
+            publicId = this.publicId,
             name = this.name,
             lastname = this.lastname,
             username = this.username,
             email = this.email,
-            password = this.password
+            password = this.password,
+            active = this.active,
         )
     }
 
     fun UserRequest.toEntityUpdated(userEntity: UserEntity) : UserEntity {
         return UserEntity(
-            id = userEntity.id,
             name = this.name,
             lastname = this.lastname,
             username = this.username,
             email = this.email,
-            password = userEntity.password,
-            //provider = this.provider
+            password = userEntity.password
         )
+    }
+
+    fun UserEntity.toDesactivate() : UserEntity {
+        this.active = false
+        return this
     }
 }

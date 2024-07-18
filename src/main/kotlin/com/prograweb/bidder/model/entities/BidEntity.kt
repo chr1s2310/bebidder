@@ -1,6 +1,8 @@
 package com.prograweb.bidder.model.entities
 
+import com.fasterxml.jackson.annotation.JsonIgnore
 import jakarta.persistence.*
+import java.util.Date
 import java.util.UUID
 
 @Entity
@@ -17,14 +19,19 @@ data class BidEntity (
         @Column(nullable = false)
         var amount: Int,
 
-        @Column
-        var lastUserBid: String? = null,
+        @JsonIgnore
+        @ManyToOne
+        @JoinColumn(name = "user_id")
+        var userBid: UserEntity? = null,
 
         @OneToOne
         @JoinColumn(name = "product_id", referencedColumnName = "id")
         var productEntity: ProductEntity,
 
         @Column(nullable = false)
-        var closed: Boolean = false
+        var closed: Boolean = false,
+
+        @Column(nullable = false)
+        var initBidDate: Date
 
 ) : AuditModel()
