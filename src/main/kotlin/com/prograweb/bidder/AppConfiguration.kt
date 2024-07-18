@@ -12,5 +12,6 @@ class AppConfiguration: WebMvcConfigurer {
                 .allowedOriginPatterns("*")
                 .allowedMethods("*")
                 .allowedHeaders("*")
+                .allowCredentials(true)
     }
 }

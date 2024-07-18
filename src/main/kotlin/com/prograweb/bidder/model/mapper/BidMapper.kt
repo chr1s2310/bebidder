@@ -2,16 +2,19 @@ package com.prograweb.bidder.model.mapper
 
 import com.prograweb.bidder.model.entities.BidEntity
 import com.prograweb.bidder.model.entities.ProductEntity
+import com.prograweb.bidder.model.entities.UserEntity
 import com.prograweb.bidder.model.mapper.ProductMapper.toResponse
 import com.prograweb.bidder.model.request.BidRequest
 import com.prograweb.bidder.model.response.BidResponse
+import java.text.SimpleDateFormat
 
 object BidMapper {
 
     fun BidRequest.toEntity(productEntity: ProductEntity) : BidEntity {
         return BidEntity(
             amount = productEntity.price,
-            productEntity = productEntity
+            productEntity = productEntity,
+            initBidDate = SimpleDateFormat("dd-MM-yyyy").parse(this.initBidDate)
         )
     }
 
@@ -20,17 +23,19 @@ object BidMapper {
             id = this.id!!,
             publicId = this.publicId,
             amount = this.amount,
-            lastUserBid = this.lastUserBid,
+            userBid = this.userBid?.name,
             product = this.productEntity.toResponse(),
-            closed = this.closed
+            closed = this.closed,
+            initBidDate = SimpleDateFormat("dd-MM-yyyy").format(this.initBidDate)
         )
     }
 
-    fun BidRequest.toPushBid(bidEntity: BidEntity) : BidEntity {
+    fun BidRequest.toPushBid(bidEntity: BidEntity, userEntity: UserEntity) : BidEntity {
         return BidEntity(
             amount = bidEntity.amount + this.amount,
             productEntity = bidEntity.productEntity,
-            lastUserBid = this.lastUserBid
+            userBid = userEntity,
+            initBidDate = bidEntity.initBidDate
         )
     }
 }
