@@ -14,7 +14,7 @@ object UserMapper {
             username = this.username,
             email = this.email,
             password = passwordEncoder.encode(this.password),
-            provider = this.provider,
+            //provider = this.provider,
         )
     }
 
@@ -37,7 +37,7 @@ object UserMapper {
             username = this.username,
             email = this.email,
             password = userEntity.password,
-            provider = this.provider
+            //provider = this.provider
         )
     }
 }

@@ -25,8 +25,8 @@ data class UserEntity (
     @Column(nullable = false)
     val username: String,
 
-    @Column(nullable = false)
-    val provider: String?, // "local", "facebook", "google"
+    //@Column(nullable = false)
+    //val provider: String?, // "local", "facebook", "google"
 
     //@Column(nullable = false)
     //val providerId: String? // Getters y setters

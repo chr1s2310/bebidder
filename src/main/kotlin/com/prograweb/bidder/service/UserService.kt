@@ -14,7 +14,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
 import org.springframework.stereotype.Service
 
 @Service
-class UserService(@Autowired private val userRepository: UserRepository, private val passwordEncoder: BCryptPasswordEncoder): UserServiceInterface, UserDetailsService {
+class UserService(@Autowired private val userRepository: UserRepository, private val passwordEncoder: BCryptPasswordEncoder): UserServiceInterface {
 
     override fun getAllUsers(): List<UserResponse> {
         try {
@@ -57,14 +57,14 @@ class UserService(@Autowired private val userRepository: UserRepository, private
         }
     }
 
-    override fun loadUserByUsername(email: String): UserDetails {
+    /*override fun loadUserByUsername(email: String): UserDetails {
         val user = userRepository.findByEmail(email) ?: throw UsernameNotFoundException("Usuario no encontrado")
         return org.springframework.security.core.userdetails.User
             .withUsername(user.email)
             .password(user.password)
             .authorities("USER")
             .build()
-    }
+    }*/
 
     override fun login(email: String, password: String): UserResponse {
         val user = userRepository.findByEmail(email) ?: throw RuntimeException("Usuario no encontrado")

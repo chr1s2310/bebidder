@@ -24,8 +24,8 @@ class UserRequest (
     @field:NotBlank(message = "El campo de la contraseña no puede estar vacío")
     var password: String,
 
-    var provider: String,
+    //var provider: String,
 
-    var providerId: String
+    //var providerId: String
 
 )
