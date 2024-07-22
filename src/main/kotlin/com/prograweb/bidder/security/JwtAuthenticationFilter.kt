@@ -1,5 +1,5 @@
 package com.prograweb.bidder.security
-import com.prograweb.bidder.service.CustomUserDetailsService
+import com.prograweb.bidder.service.CustUserDetailsService
 import com.prograweb.bidder.service.JwtService
 import jakarta.servlet.FilterChain
 import jakarta.servlet.http.HttpServletRequest
@@ -14,7 +14,7 @@ import org.springframework.web.filter.OncePerRequestFilter
 @Component
 class JwtAuthenticationFilter(
     private val jwtService: JwtService,
-    private val userDetailsService: CustomUserDetailsService
+    private val userDetailsService: CustUserDetailsService
 ) : OncePerRequestFilter() {
 
     override fun doFilterInternal(
