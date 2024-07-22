@@ -23,7 +23,7 @@ object BidMapper {
             id = this.id!!,
             publicId = this.publicId,
             amount = this.amount,
-            userBid = this.userBid?.name,
+            userPublicId = this.winningUser?.publicId,
             product = this.productEntity.toResponse(),
             closed = this.closed,
             initBidDate = SimpleDateFormat("dd-MM-yyyy").format(this.initBidDate)
@@ -31,11 +31,13 @@ object BidMapper {
     }
 
     fun BidRequest.toPushBid(bidEntity: BidEntity, userEntity: UserEntity) : BidEntity {
-        return BidEntity(
-            amount = bidEntity.amount + this.amount,
-            productEntity = bidEntity.productEntity,
-            userBid = userEntity,
-            initBidDate = bidEntity.initBidDate
-        )
+        bidEntity.amount += this.amount
+        bidEntity.winningUser = userEntity
+        return bidEntity
+    }
+
+    fun BidEntity.toCloseBid() : BidEntity {
+        this.closed = true
+        return this
     }
 }

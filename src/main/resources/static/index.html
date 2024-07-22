@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">
+    <title>APLICACION DE FORO | FORO ONLINE</title>
+    <link href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+    <link href="./css/style.css" rel="stylesheet">
+    <script src="//netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>
+</head>
+<body>
+<div id="welcome-page">
+    <img class="imagen" src="https://www.redalyc.org/redalyc/media/inc/img/institucion/UniversidaddeCuenca_17813.jpg">
+    <div class="welcome-page-container">
+        <h1 class="title">FORO UNIVERSITARIO</h1>
+        <h3 class="subtitle">Por favor ingresa un nombre de usuario:</h3>
+        <form id="welcomeForm" name="welcomeForm">
+            <div class="form-group">
+                <input type="text" id="name" placeholder="Usuario" class="form-control">
+            </div>
+            <div class="form-group">
+                <button type="submit" class="accent username-submit">Ingresar al foro</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div id="dialogue-page" class="hidden">
+    <img class="imagen" src="https://www.redalyc.org/redalyc/media/inc/img/institucion/UniversidaddeCuenca_17813.jpg">
+    <div class="dialogue-container">
+        <div class="dialogue-header">
+            <hr>
+            <h2>BIENVENIDO AL FORO</h2>
+            <hr>
+        </div>
+        <h3>Discusion General:</h3>
+        <ul id="messageList">
+            <!-- Aquí se insertarán los mensajes -->
+        </ul>
+        <hr>
+        <h4>Publicar en el Foro</h4>
+        <form id="dialogueForm" name="dialogueForm">
+            <div class="form-group">
+                <div class="input-group clearfix">
+                    <input type="text" id="chatMessage" placeholder="Ingrese su tema" autocomplete="off" class="form-control">
+                </div>
+                <hr>
+                <button type="submit" class="accent">Enviar Discusion</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/sockjs-client/1.1.4/sockjs.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"></script>
+<script src="./js/script.js"></script>
+</body>
+</html>

@@ -6,6 +6,8 @@ import java.util.UUID
 
 class BidRequest (
 
+        val publicId: UUID? = null,
+
         @field:NotNull(message = "El monto es requerido")
         @field:Positive(message = "El monto debe ser positivo")
         val amount: Int,
@@ -15,6 +17,5 @@ class BidRequest (
         @field:NotNull(message = "El producto es requerido")
         val productPublicId: UUID,
 
-        @field:NotNull(message = "La fecha de inicio es requerida")
-        val initBidDate: String
+        val initBidDate: String? = null
 )

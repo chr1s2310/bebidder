@@ -5,7 +5,6 @@ import com.prograweb.bidder.model.request.UserRequest
 import com.prograweb.bidder.model.response.UserResponse
 import java.util.UUID
 
-
 interface UserServiceInterface {
 
     fun getAllActiveUsers(): List<UserResponse>

@@ -17,4 +17,8 @@ interface BidServiceInterface {
     fun updateBid(publicId: UUID, bidRequest: BidRequest): BidResponse
 
     fun closeBid(publicId: UUID): BidResponse
+
+    fun getBidsInitPending(): List<BidResponse>
+
+    fun getBidsByUser(userPublicId: UUID): List<BidResponse>
 }

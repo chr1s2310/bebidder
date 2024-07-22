@@ -17,7 +17,5 @@ class UserResponse (
 
     val username: String,
 
-    val password: String,
-
     val active: Boolean
 )
