@@ -37,17 +37,17 @@ class UserController ( @Autowired private val authService: AuthServiceInterface,
     }
 
     @PutMapping("/{publicId}")
-    fun updateUser(@PathVariable publicId: UUID, @Valid @RequestBody user: UserRequest): ResponseEntity<UserResponse> {
+    fun updateUser(@PathVariable publicId: UUID, @Valid @RequestBody user: UserRequest): ResponseEntity<Pair<UserResponse?, AuthResponse>> {
         return ResponseEntity.ok(userService.updateUser(publicId, user))
     }
 
     @PostMapping("/login")
-    fun loginUser(@Valid @RequestBody user: UserLoginRequest): ResponseEntity<AuthResponse> {
+    fun loginUser(@Valid @RequestBody user: UserLoginRequest): ResponseEntity<Pair<UserResponse?, AuthResponse>> {
         return ResponseEntity.ok(authService.login(user))
     }
 
     @PostMapping("/signup")
-    fun registerUser(@Valid @RequestBody user: UserRequest): ResponseEntity<AuthResponse> {
+    fun registerUser(@Valid @RequestBody user: UserRequest): ResponseEntity<Pair<UserResponse?, AuthResponse>> {
         return ResponseEntity.ok(authService.register(user))
     }
 }
