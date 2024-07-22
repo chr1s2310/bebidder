@@ -3,6 +3,8 @@ package com.prograweb.bidder.service
 import com.prograweb.bidder.model.request.UserLoginRequest
 import com.prograweb.bidder.model.request.UserRequest
 import com.prograweb.bidder.model.response.AuthResponse
+import com.prograweb.bidder.model.response.UserResponse
+import org.springframework.security.core.Authentication
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.security.authentication.AuthenticationManager
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
@@ -15,25 +17,24 @@ class AuthService(
     @Autowired private val jwtService: JwtServiceInterface,
     @Autowired private val userService: UserServiceInterface
 ): AuthServiceInterface {
-
-    override fun login(userLoginRequest: UserLoginRequest): AuthResponse {
-        try {
-            val authentication = authenticationManager.authenticate(
-                    UsernamePasswordAuthenticationToken(userLoginRequest.email, userLoginRequest.password)
-            )
-            val userDetails = authentication.principal as UserDetails
-            return AuthResponse(jwtService.generateToken(userDetails.username))
-        } catch (e: Exception) {
-            throw e
-        }
+    fun authenticate(email: String, password: String): Authentication {
+        return authenticationManager.authenticate(
+            UsernamePasswordAuthenticationToken(email, password)
+        )
+    }
+    override fun login(userLoginRequest: UserLoginRequest): Pair<UserResponse?, AuthResponse> {
+        val authentication = authenticate(userLoginRequest.email, userLoginRequest.password)
+        val userDetails = authentication.principal as UserDetails
+        return Pair(userService.login(userLoginRequest), AuthResponse(jwtService.generateToken(userDetails.username)))
     }
 
-    override fun register(user: UserRequest): AuthResponse {
-        try {
-            val userR = userService.registerUser(user)
-            return AuthResponse(jwtService.generateToken(userR.email))
-        } catch (e: Exception) {
-            throw e
-        }
+    override fun register(user: UserRequest): Pair<UserResponse?, AuthResponse> {
+        val userR = userService.registerUser(user)
+        return Pair(userR, AuthResponse(jwtService.generateToken(userR.email)))
+    }
+
+    override fun logout(): AuthResponse {
+
+        return AuthResponse("")
     }
 }
