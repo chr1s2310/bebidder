@@ -6,6 +6,7 @@ import com.prograweb.bidder.model.mapper.UserMapper.toEntityUpdated
 import com.prograweb.bidder.model.mapper.UserMapper.toResponse
 import com.prograweb.bidder.model.request.UserLoginRequest
 import com.prograweb.bidder.model.request.UserRequest
+import com.prograweb.bidder.model.response.AuthResponse
 import com.prograweb.bidder.model.response.UserResponse
 import com.prograweb.bidder.repository.UserRepository
 import org.springframework.beans.factory.annotation.Autowired
@@ -15,7 +16,7 @@ import java.util.UUID
 
 @Service
 class UserService(
-        @Autowired private val userRepository: UserRepository,
+        @Autowired private val userRepository: UserRepository, @Autowired private val jwtService: JwtServiceInterface,
         private val passwordEncoder: BCryptPasswordEncoder
 ): UserServiceInterface {
 
@@ -53,10 +54,10 @@ class UserService(
         return userRepository.save(userEntity).toResponse()
     }
 
-    override fun updateUser(publicId: UUID, user: UserRequest): UserResponse {
+    override fun updateUser(publicId: UUID, user: UserRequest): Pair<UserResponse?, AuthResponse> {
         val userEnt = userRepository.findByPublicId(publicId) ?: throw Exception("Usuario no encontrado")
         val userEntityUpdate = user.toEntityUpdated(userEnt)
-        return userRepository.save(userEntityUpdate).toResponse()
+        return Pair( userRepository.save(userEntityUpdate).toResponse(), AuthResponse(jwtService.generateToken(user.username)))
     }
 
     override fun desactivateUser(publicId: UUID) {

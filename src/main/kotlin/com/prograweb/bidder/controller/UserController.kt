@@ -38,7 +38,7 @@ class UserController ( @Autowired private val authService: AuthServiceInterface,
     }
 
     @PutMapping("/{publicId}")
-    fun updateUser(@PathVariable publicId: UUID, @Valid @RequestBody user: UserRequest): ResponseEntity<UserResponse> {
+    fun updateUser(@PathVariable publicId: UUID, @Valid @RequestBody user: UserRequest): ResponseEntity<Pair<UserResponse?, AuthResponse>>{
         return ResponseEntity.ok(userService.updateUser(publicId, user))
     }
 
