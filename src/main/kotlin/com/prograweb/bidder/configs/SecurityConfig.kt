@@ -33,9 +33,7 @@ class SecurityConfig (private val jwtAuthFilter: JwtAuthenticationFilter,private
 
             authorizeHttpRequests {
                 authorize("/users/**", permitAll)
-                authorize("/**", permitAll)
-                antMatcher("/**") // only for testing
-
+                antMatcher("/users/**") // only for testing
                 authorize(anyRequest, authenticated)
             }
             antMatcher( "/**")

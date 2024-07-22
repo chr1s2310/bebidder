@@ -4,6 +4,7 @@ import jakarta.validation.constraints.NotBlank
 import jakarta.validation.constraints.NotNull
 
 class UserLoginRequest (
+
     @field:NotNull(message = "El email es requerido")
     @field:NotBlank(message = "El email no puede estar vacío")
     var email: String,

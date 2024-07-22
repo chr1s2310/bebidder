@@ -38,17 +38,14 @@ object ProductMapper {
     }
 
     fun ProductRequest.toEntityUpdated(productEntity: ProductEntity, categoryEntity: CategoryEntity, images: MutableList<ProductImageEntity>) : ProductEntity {
-        return ProductEntity(
-            id = productEntity.id,
-            publicId = productEntity.publicId,
-            name = this.name,
-            title = this.title,
-            description = this.description,
-            features = this.features,
-            price = this.price,
-            href = this.href,
-            categoryEntity = categoryEntity,
-                images = images
-        )
+        productEntity.name = this.name
+        productEntity.title = this.title
+        productEntity.description = this.description
+        productEntity.features = this.features
+        productEntity.price = this.price
+        productEntity.href = this.href
+        productEntity.categoryEntity = categoryEntity
+        productEntity.images = images
+        return productEntity
     }
 }

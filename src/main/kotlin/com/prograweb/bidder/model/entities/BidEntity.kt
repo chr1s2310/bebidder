@@ -22,7 +22,7 @@ data class BidEntity (
         @JsonIgnore
         @ManyToOne
         @JoinColumn(name = "user_id")
-        var userBid: UserEntity? = null,
+        var winningUser: UserEntity? = null,
 
         @OneToOne
         @JoinColumn(name = "product_id", referencedColumnName = "id")
@@ -32,6 +32,9 @@ data class BidEntity (
         var closed: Boolean = false,
 
         @Column(nullable = false)
-        var initBidDate: Date
+        var initBidDate: Date,
+
+        @ManyToMany(mappedBy = "suscriptions")
+        var suscriptors: List<UserEntity> = mutableListOf()
 
 ) : AuditModel()

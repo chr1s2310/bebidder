@@ -2,8 +2,10 @@ package com.prograweb.bidder.repository
 
 import com.prograweb.bidder.model.entities.UserEntity
 import org.springframework.data.jpa.repository.JpaRepository
+import org.springframework.stereotype.Repository
 import java.util.UUID
 
+@Repository
 interface UserRepository : JpaRepository<UserEntity, Long> {
 
     fun findByPublicId(publicId: UUID): UserEntity?
@@ -12,10 +14,6 @@ interface UserRepository : JpaRepository<UserEntity, Long> {
 
     fun findByActive(active: Boolean): List<UserEntity>
 
-    //fun existsByEmail(email: String): Boolean?
-
-    //fun existsByProviderId(providerId: String): Boolean?
-
-    //fun findByProviderId(providerId: String): UserEntity?
+    fun findBySuscriptionsPublicId(bidPublicId: UUID): List<UserEntity>
 
 }

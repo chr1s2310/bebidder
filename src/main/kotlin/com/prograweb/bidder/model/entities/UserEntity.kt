@@ -29,16 +29,18 @@ data class UserEntity (
     @Column(nullable = false)
     var username: String,
 
-    @OneToMany(mappedBy = "userBid", orphanRemoval = true, cascade = [CascadeType.ALL])
-    var bids: MutableList<BidEntity> = mutableListOf(),
+    @OneToMany(mappedBy = "winningUser", orphanRemoval = true, cascade = [CascadeType.ALL])
+    var bidsWon: MutableList<BidEntity> = mutableListOf(),
 
     @Column(nullable = false)
-    var active: Boolean = true
+    var active: Boolean = true,
 
-    //@Column(nullable = false)
-    //val provider: String?, // "local", "facebook", "google"
-
-    //@Column(nullable = false)
-    //val providerId: String? // Getters y setters
+    @ManyToMany
+    @JoinTable(
+            name = "users_bids",
+            joinColumns = [JoinColumn(name = "user_id")],
+            inverseJoinColumns = [JoinColumn(name = "bid_id")]
+    )
+    var suscriptions: MutableList<BidEntity> = mutableListOf()
 
 ): AuditModel()

@@ -23,9 +23,7 @@ object CategoryMapper {
     }
 
     fun CategoryRequest.toEntityUpdated(categoryEntity: CategoryEntity) : CategoryEntity {
-        return CategoryEntity(
-            id = categoryEntity.id,
-            name = this.name
-        )
+        categoryEntity.name = this.name
+        return categoryEntity
     }
 }

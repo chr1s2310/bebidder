@@ -6,11 +6,11 @@ import org.springframework.stereotype.Service
 import java.util.*
 
 @Service
-class JwtService {
+class JwtService: JwtServiceInterface {
     private val secretKey = "1234567890"
     private val validityInMs = 3600000L // 1 hora
 
-    fun generateToken(email: String): String {
+    override fun generateToken(email: String): String {
         val now = Date()
         val validity = Date(now.time + validityInMs)
 
@@ -22,7 +22,7 @@ class JwtService {
             .compact()
     }
 
-    fun validateToken(token: String): Boolean {
+    override fun validateToken(token: String): Boolean {
         return try {
             Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token)
             true
@@ -31,7 +31,7 @@ class JwtService {
         }
     }
 
-    fun getEmailFromToken(token: String): String? {
+    override fun getEmailFromToken(token: String): String? {
         return try {
             Jwts.parser()
                 .setSigningKey(secretKey)

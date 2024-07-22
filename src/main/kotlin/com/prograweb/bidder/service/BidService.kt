@@ -1,5 +1,6 @@
 package com.prograweb.bidder.service
 
+import com.prograweb.bidder.model.mapper.BidMapper.toCloseBid
 import com.prograweb.bidder.model.mapper.BidMapper.toEntity
 import com.prograweb.bidder.model.mapper.BidMapper.toPushBid
 import com.prograweb.bidder.model.mapper.BidMapper.toResponse
@@ -50,6 +51,9 @@ class BidService(
     override fun deleteBid(publicId: UUID) {
         try {
             val bid = bidRepository.findByPublicId(publicId) ?: throw Exception("Puja no encontrada")
+            if (bid.winningUser != null) {
+                throw Exception("La puja ya se encuetra procesada, no se puede elminar")
+            }
             bidRepository.delete(bid)
         } catch (e: Exception) {
             throw e
@@ -59,10 +63,8 @@ class BidService(
     override fun updateBid(publicId: UUID, bidRequest: BidRequest): BidResponse {
         try {
             val bidEntity = bidRepository.findByPublicId(publicId) ?: throw Exception("Puja no encontrada")
-            val product = productRepository.findByPublicId(bidRequest.productPublicId) ?: throw Exception("Producto no encontrado")
             val user = userRepository.findByPublicId(bidRequest.userPublicId!!) ?: throw Exception("Usuario no encontrado")
             val bidUpdated = bidRequest.toPushBid(bidEntity, user)
-            bidUpdated.productEntity = product
             val bidSaved = bidRepository.save(bidUpdated)
             return bidSaved.toResponse()
         } catch (e: Exception) {
@@ -73,9 +75,26 @@ class BidService(
     override fun closeBid(publicId: UUID): BidResponse {
         try {
             val bid = bidRepository.findByPublicId(publicId) ?: throw Exception("Puja no encontrada")
-            bid.closed = true
-            val bidSaved = bidRepository.save(bid)
+            val bidSaved = bidRepository.save(bid.toCloseBid())
             return bidSaved.toResponse()
+        } catch (e: Exception) {
+            throw e
+        }
+    }
+
+    override fun getBidsInitPending(): List<BidResponse> {
+        try {
+            val bids = bidRepository.findByInitBidDateGreaterThanEqual(Date())
+            return bids.map { it.toResponse() }
+        } catch (e: Exception) {
+            throw e
+        }
+    }
+
+    override fun getBidsByUser(userPublicId: UUID): List<BidResponse> {
+        try {
+            val bids = bidRepository.findBySuscriptorsPublicId(userPublicId)
+            return bids.map { it.toResponse() }
         } catch (e: Exception) {
             throw e
         }

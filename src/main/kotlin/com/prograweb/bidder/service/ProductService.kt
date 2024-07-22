@@ -13,7 +13,10 @@ import org.springframework.stereotype.Service
 import java.util.UUID
 
 @Service
-class ProductService(@Autowired private val productRepository: ProductRepository, @Autowired private val categoryRepository: CategoryRepository): ProductServiceInterface {
+class ProductService(
+        @Autowired private val productRepository: ProductRepository,
+        @Autowired private val categoryRepository: CategoryRepository
+): ProductServiceInterface {
     override fun getAll(): List<ProductResponse> {
         try {
             return productRepository.findAll().map { it.toResponse() }

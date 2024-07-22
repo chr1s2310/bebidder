@@ -4,17 +4,17 @@ import java.util.UUID
 
 class BidResponse (
 
-        val id: Long,
+        val id: Long? = null,
 
-        val publicId: UUID,
+        val publicId: UUID? = null,
 
-        val amount: Int,
+        val amount: Int? = 0,
 
-        val userBid: String? = null,
+        val userPublicId: UUID? = null,
 
-        val product: ProductResponse,
+        val product: ProductResponse? = null,
 
-        val closed: Boolean,
+        val closed: Boolean? = false,
 
-        val initBidDate: String
+        val initBidDate: String? = null
 )

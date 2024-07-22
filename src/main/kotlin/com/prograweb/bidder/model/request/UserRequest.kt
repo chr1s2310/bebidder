@@ -4,6 +4,7 @@ import jakarta.validation.constraints.NotBlank
 import jakarta.validation.constraints.NotNull
 
 class UserRequest (
+
     @field:NotNull(message = "El nombre de usuario es requerido")
     @field:NotBlank(message = "El nombre de usuario no puede estar vacío")
     val name: String,
@@ -23,9 +24,5 @@ class UserRequest (
     @field:NotNull(message = "La contraseña es requerida")
     @field:NotBlank(message = "El campo de la contraseña no puede estar vacío")
     var password: String,
-
-    //var provider: String,
-
-    //var providerId: String
 
 )
