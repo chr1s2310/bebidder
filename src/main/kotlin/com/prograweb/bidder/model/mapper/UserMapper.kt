@@ -37,6 +37,7 @@ object UserMapper {
         userEntity.lastname = this.lastname
         userEntity.username = this.username
         userEntity.email = this.email
+        userEntity.profilePicture = this.profilePicture
         return userEntity
     }
 
