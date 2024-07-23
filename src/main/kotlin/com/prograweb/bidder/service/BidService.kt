@@ -182,6 +182,15 @@ class BidService(
     override fun remainingTime(publicId: UUID): TimeResponse {
         return TimeResponse(remainingTime = bidHashMap.getOrDefault(publicId, -1))
     }
+
+    override fun getBidswonByUser(userPublicId: UUID): List<BidResponse> {
+        try {
+            val bids = bidRepository.findByWinningUserPublicId(userPublicId)
+            return bids.map { it.toResponse() }
+        } catch (e: Exception) {
+            throw e
+        }
+    }
 }
 
 private operator fun LocalDateTime.compareTo(date: Date): Int {

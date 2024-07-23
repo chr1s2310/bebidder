@@ -32,4 +32,6 @@ interface BidServiceInterface {
 
     fun getBidsByUserNoSuscribed(userPublicId: UUID): List<BidResponse>
 
+    fun getBidswonByUser(userPublicId: UUID): List<BidResponse>
+
 }

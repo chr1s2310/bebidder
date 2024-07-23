@@ -68,4 +68,9 @@ class BidController(@Autowired private val bidServiceInterface: BidServiceInterf
     fun remainingTime(@PathVariable publicId: UUID): ResponseEntity<Any> {
         return ResponseEntity.ok(bidServiceInterface.remainingTime(publicId))
     }
+
+    @GetMapping("/user/{publicId}/won")
+    fun getBidswonByUser(@PathVariable publicId: UUID): ResponseEntity<List<BidResponse>> {
+        return ResponseEntity.ok(bidServiceInterface.getBidswonByUser(publicId))
+    }
 }
