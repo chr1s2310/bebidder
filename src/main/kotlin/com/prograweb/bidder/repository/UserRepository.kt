@@ -16,4 +16,6 @@ interface UserRepository : JpaRepository<UserEntity, Long> {
 
     fun findBySuscriptionsPublicId(bidPublicId: UUID): List<UserEntity>
 
+    fun findByUsername(username: String): UserEntity?
+
 }

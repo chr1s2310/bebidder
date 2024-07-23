@@ -26,7 +26,7 @@ data class UserEntity (
     @Column(nullable = false)
     var lastname: String,
 
-    @Column(nullable = false)
+    @Column(nullable = false, unique = true)
     var username: String,
 
     @OneToMany(mappedBy = "winningUser", orphanRemoval = true, cascade = [CascadeType.ALL])

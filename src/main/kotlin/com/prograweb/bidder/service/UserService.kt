@@ -46,12 +46,18 @@ class UserService(
     }
 
     override fun registerUser(user: UserRequest): UserResponse {
-
-        val userEntity = user.toEntity()
-        if (userRepository.findByEmail(user.email) != null) {
-            throw RuntimeException("Email ya registrado")
+        try {
+            userRepository.findByUsername(user.username)?.let {
+                throw Exception("Nombre de usuario ya registrado")
+            }
+            userRepository.findByEmail(user.email)?.let {
+                throw Exception("Email ya registrado")
+            }
+            val userEntity = user.toEntity()
+            return userRepository.save(userEntity).toResponse()
+        } catch (e: Exception) {
+            throw e
         }
-        return userRepository.save(userEntity).toResponse()
     }
 
     override fun updateUser(publicId: UUID, user: UserRequest): Pair<UserResponse?, AuthResponse> {

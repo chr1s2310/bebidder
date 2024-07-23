@@ -1,9 +1,7 @@
 package com.prograweb.bidder.controller
 
 import com.prograweb.bidder.model.request.BidRequest
-import com.prograweb.bidder.model.response.BidHistoryResponse
 import com.prograweb.bidder.model.response.BidResponse
-import com.prograweb.bidder.model.response.TimeResponse
 import com.prograweb.bidder.service.BidServiceInterface
 import jakarta.validation.Valid
 import org.springframework.beans.factory.annotation.Autowired
@@ -53,20 +51,5 @@ class BidController(@Autowired private val bidServiceInterface: BidServiceInterf
     @PutMapping("/{publicId}/suscriptor/{userPublicId}")
     fun addSuscriptor(@PathVariable publicId: UUID, @PathVariable userPublicId: UUID): ResponseEntity<BidResponse> {
         return ResponseEntity.ok(bidServiceInterface.addSuscriptor(publicId, userPublicId))
-    }
-
-    @GetMapping("/user/{publicId}/no-suscribed")
-    fun getBidsByUserNoSuscribed(@PathVariable publicId: UUID): ResponseEntity<List<BidResponse>> {
-        return ResponseEntity.ok(bidServiceInterface.getBidsByUserNoSuscribed(publicId))
-    }
-
-    @GetMapping("/{publicId}/time/remaining")
-    fun getHistoryUser(@PathVariable publicId: UUID): ResponseEntity<List<BidHistoryResponse>> {
-        return ResponseEntity.ok(bidServiceInterface.getBidHistory(publicId))
-    }
-
-    @GetMapping("/{publicId}/time")
-    fun getRemainingTime(@PathVariable publicId: UUID): ResponseEntity<TimeResponse> {
-        return ResponseEntity.ok(bidServiceInterface.remainingTime(publicId))
     }
 }

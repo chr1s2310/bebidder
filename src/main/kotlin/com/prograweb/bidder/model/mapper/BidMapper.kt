@@ -32,6 +32,7 @@ object BidMapper {
             publicId = this.publicId,
             amount = this.amount,
             userPublicId = this.winningUser?.publicId,
+            headingUser = this.winningUser?.username,
             product = this.productEntity.toResponse(),
             closed = this.closed,
             initBidDate = this.initBidDate.format(dateTimeFormatter)
