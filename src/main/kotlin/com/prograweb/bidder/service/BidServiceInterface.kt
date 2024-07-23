@@ -26,9 +26,10 @@ interface BidServiceInterface {
 
     fun addSuscriptor(publicId: UUID, userPublicId: UUID): BidResponse
 
-    fun getBidHistory(userPublicId: UUID): List<BidHistoryResponse>
+    fun getBidHistory(userPublicId: UUID): List<BidResponse>
 
     fun remainingTime(publicId: UUID): TimeResponse
+
     fun getBidsByUserNoSuscribed(userPublicId: UUID): List<BidResponse>
 
 }
