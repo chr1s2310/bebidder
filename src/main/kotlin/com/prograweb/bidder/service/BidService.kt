@@ -6,6 +6,7 @@ import com.prograweb.bidder.model.mapper.BidMapper.toEntity
 import com.prograweb.bidder.model.mapper.BidMapper.toPushBid
 import com.prograweb.bidder.model.mapper.BidMapper.toResponse
 import com.prograweb.bidder.model.request.BidRequest
+import com.prograweb.bidder.model.response.BidHistoryResponse
 import com.prograweb.bidder.model.response.BidResponse
 import com.prograweb.bidder.repository.BidRepository
 import com.prograweb.bidder.repository.ProductRepository
@@ -116,4 +117,27 @@ class BidService(
             throw e
         }
     }
+
+    override fun getBidHistory(publicId: UUID): List<BidHistoryResponse> {
+        try {
+            val user = userRepository.findByPublicId(publicId) ?: throw Exception("Usuario no encontrado")
+            val bids = bidRepository.findBySuscriptorsPublicId(publicId) ?: throw Exception("Pujas no encontradas")
+
+            val historyBids = bids.map { bid ->
+                BidHistoryResponse(
+                    bidId = bid.publicId.toString(),
+                    winningUser = bid.winningUser?.publicId.toString(),
+                    mount = bid.amount.toDouble(),
+                    date = bid.initBidDate.toString(),
+                    product = bid.productEntity
+                )
+            }
+            val historialPujas = historyBids.sortedByDescending { it.mount }
+            return historialPujas
+        } catch (e: Exception) {
+            throw e
+        }
+
+    }
+
 }

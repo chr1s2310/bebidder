@@ -1,6 +1,7 @@
 package com.prograweb.bidder.service
 
 import com.prograweb.bidder.model.request.BidRequest
+import com.prograweb.bidder.model.response.BidHistoryResponse
 import com.prograweb.bidder.model.response.BidResponse
 import java.util.UUID
 
@@ -23,4 +24,6 @@ interface BidServiceInterface {
     fun getBidsByUser(userPublicId: UUID): List<BidResponse>
 
     fun addSuscriptor(publicId: UUID, userPublicId: UUID): BidResponse
+
+    fun getBidHistory(publicId: UUID): List<BidHistoryResponse>
 }
