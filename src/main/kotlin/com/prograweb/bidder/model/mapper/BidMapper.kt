@@ -44,6 +44,11 @@ object BidMapper {
         return bidEntity
     }
 
+    fun BidEntity.toOpenBid() : BidEntity {
+        this.closed = false
+        return this
+    }
+
     fun BidEntity.toCloseBid() : BidEntity {
         this.closed = true
         return this
