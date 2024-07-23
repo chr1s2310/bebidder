@@ -6,6 +6,7 @@ import com.prograweb.bidder.model.request.PayPalRequest
 import com.prograweb.bidder.repository.TransactionRepository
 import com.prograweb.bidder.service.PayPalService
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 import java.util.*
 
@@ -33,7 +34,7 @@ class PayPalController (@Autowired private val paypalService: PayPalService, @Au
     @GetMapping("/success")
     fun successPay(@RequestParam("paymentId") paymentId: String?, @RequestParam("PayerID") payerId: String?): String {
         println("paymentId: $paymentId, payerId: $payerId")
-        return try {
+        try {
             val payment = paypalService.executePayment(paymentId!!, payerId!!)
 
             if (payment.state == "approved") {
@@ -53,15 +54,15 @@ class PayPalController (@Autowired private val paypalService: PayPalService, @Au
                     )
                 transactionRepository!!.save<TransactionEntity>(transaction)
 
-                "Pago exitoso"
+                ResponseEntity.ok("Pago exitoso")
             } else {
-                "Error en el pago"
+                return "Error en el pago"
             }
         } catch (e: PayPalRESTException) {
             e.printStackTrace()
             return "Error en el pago"
         }
-
+        return "Error en el pago"
     }
 
     @GetMapping("/cancel")
