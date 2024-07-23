@@ -12,6 +12,8 @@ class BidResponse (
 
         val userPublicId: UUID? = null,
 
+        val headingUser: String? = null,
+
         val product: ProductResponse? = null,
 
         val closed: Boolean? = false,

@@ -45,7 +45,8 @@ class BidService(
                         bidHashMap.put(bid.publicId, timeLeft)
 
                         if (timeLeft == -1) {
-                            bidRepository.save(bid.toCloseBid())
+                            val bidUpdate = bidRepository.findByPublicId(bid.publicId)!!
+                            bidRepository.save(bidUpdate.toCloseBid())
                             updater.cancel()
                             bidHashMap.remove(bid.publicId)
                         }
