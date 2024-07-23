@@ -22,5 +22,7 @@ class ProductResponse(
 
         val category: String,
 
-        val images: List<ProductImageResponse>
+        val categoryPublicId: UUID,
+
+        val images: List<String>
 )

@@ -8,6 +8,8 @@ interface CategoryServiceInterface {
 
     fun getAll(): List<CategoryResponse>
 
+    fun getAllDropDown(): List<CategoryResponse>
+
     fun getCategory(publicId: UUID): CategoryResponse
 
     fun saveCategory(categoryRequest: CategoryRequest): CategoryResponse

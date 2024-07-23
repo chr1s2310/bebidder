@@ -2,7 +2,7 @@ package com.prograweb.bidder.model.entities
 
 import com.fasterxml.jackson.annotation.JsonIgnore
 import jakarta.persistence.*
-import java.util.Date
+import java.time.LocalDateTime
 import java.util.UUID
 
 @Entity
@@ -29,10 +29,10 @@ data class BidEntity (
         var productEntity: ProductEntity,
 
         @Column(nullable = false)
-        var closed: Boolean = false,
+        var closed: Boolean = true,
 
         @Column(nullable = false)
-        var initBidDate: Date,
+        var initBidDate: LocalDateTime,
 
         @ManyToMany(mappedBy = "suscriptions")
         var suscriptors: List<UserEntity> = mutableListOf()

@@ -1,5 +1,6 @@
 package com.prograweb.bidder.service
 
+import com.prograweb.bidder.model.mapper.CategoryMapper.toDropDownResponse
 import com.prograweb.bidder.model.mapper.CategoryMapper.toEntity
 import com.prograweb.bidder.model.mapper.CategoryMapper.toEntityUpdated
 import com.prograweb.bidder.model.mapper.CategoryMapper.toResponse
@@ -15,6 +16,14 @@ class CategoryService(@Autowired private val categoryRepository: CategoryReposit
     override fun getAll(): List<CategoryResponse> {
         try {
             return categoryRepository.findAll().map { it.toResponse() }
+        } catch (e: Exception) {
+            throw e
+        }
+    }
+
+    override fun getAllDropDown(): List<CategoryResponse> {
+        try {
+            return categoryRepository.findAll().map { it.toDropDownResponse() }
         } catch (e: Exception) {
             throw e
         }

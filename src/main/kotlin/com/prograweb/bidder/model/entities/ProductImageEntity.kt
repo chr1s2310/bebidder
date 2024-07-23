@@ -15,8 +15,8 @@ data class ProductImageEntity(
         @Column(nullable = false)
         var publicId: UUID = UUID.randomUUID(),
 
-        @Column(nullable = false, columnDefinition = "bytea")
-        var image: ByteArray,
+        @Column(nullable = false, columnDefinition = "TEXT")
+        var image: String,
 
         @JsonIgnore
         @ManyToOne

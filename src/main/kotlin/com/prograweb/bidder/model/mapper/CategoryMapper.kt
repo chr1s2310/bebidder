@@ -26,4 +26,13 @@ object CategoryMapper {
         categoryEntity.name = this.name
         return categoryEntity
     }
+
+    fun CategoryEntity.toDropDownResponse() : CategoryResponse {
+        return CategoryResponse(
+            id = this.id!!,
+            name = this.name,
+            products = emptyList(),
+            publicId = this.publicId
+        )
+    }
 }

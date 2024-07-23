@@ -7,15 +7,19 @@ import com.prograweb.bidder.model.mapper.ProductMapper.toResponse
 import com.prograweb.bidder.model.request.ProductRequest
 import com.prograweb.bidder.model.response.ProductResponse
 import com.prograweb.bidder.repository.CategoryRepository
+import com.prograweb.bidder.repository.ProductImageRepository
 import com.prograweb.bidder.repository.ProductRepository
+import jakarta.transaction.Transactional
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 import java.util.UUID
 
 @Service
+@Transactional
 class ProductService(
         @Autowired private val productRepository: ProductRepository,
-        @Autowired private val categoryRepository: CategoryRepository
+        @Autowired private val categoryRepository: CategoryRepository,
+        @Autowired private val productImageRepository: ProductImageRepository
 ): ProductServiceInterface {
     override fun getAll(): List<ProductResponse> {
         try {
@@ -62,7 +66,8 @@ class ProductService(
             val categoryEntity = categoryRepository.findByPublicId(product.categoryPublicId) ?: throw Exception("Categoría no encontrada")
             productEntity.images.clear()
             val images = product.images.map { it.toEntity(productEntity) }.toMutableList()
-            val productoEntityUpdated = product.toEntityUpdated(productEntity, categoryEntity, images)
+            productEntity.images.addAll(images)
+            val productoEntityUpdated = product.toEntityUpdated(productEntity, categoryEntity)
             val productoSaved = productRepository.save(productoEntityUpdated)
             return productoSaved.toResponse()
         } catch (e: Exception) {
