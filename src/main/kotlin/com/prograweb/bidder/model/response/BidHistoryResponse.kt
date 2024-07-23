@@ -1,17 +1,16 @@
 package com.prograweb.bidder.model.response
 
-import com.prograweb.bidder.model.entities.ProductEntity
-import java.util.Date
+import java.util.UUID
 
 class BidHistoryResponse (
 
-    val bidId: String,
+    val bidId: UUID,
 
     val winningUser: String,
 
-    val mount: Double,
+    val mount: Int,
 
     val date: String,
 
-    val product: ProductEntity
+    val product: ProductResponse
 )

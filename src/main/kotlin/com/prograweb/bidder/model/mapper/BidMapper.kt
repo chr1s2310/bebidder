@@ -5,11 +5,10 @@ import com.prograweb.bidder.model.entities.ProductEntity
 import com.prograweb.bidder.model.entities.UserEntity
 import com.prograweb.bidder.model.mapper.ProductMapper.toResponse
 import com.prograweb.bidder.model.request.BidRequest
+import com.prograweb.bidder.model.response.BidHistoryResponse
 import com.prograweb.bidder.model.response.BidResponse
-import java.text.SimpleDateFormat
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
-import java.util.*
 
 object BidMapper {
 
@@ -58,5 +57,16 @@ object BidMapper {
     fun BidEntity.toAddSuscriptor(userEntity: UserEntity) : BidEntity {
         this.suscriptors.add(userEntity)
         return this
+    }
+
+    fun BidEntity.toHistoryResponse(): BidHistoryResponse {
+        val dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm")
+        return BidHistoryResponse(
+            bidId = this.publicId,
+            mount = this.amount,
+            product = this.productEntity.toResponse(),
+                winningUser = this.winningUser?.username ?: "No winner",
+            date = this.initBidDate.format(dateTimeFormatter)
+        )
     }
 }

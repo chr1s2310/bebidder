@@ -4,6 +4,7 @@ import com.prograweb.bidder.model.entities.BidEntity
 import com.prograweb.bidder.model.mapper.BidMapper.toAddSuscriptor
 import com.prograweb.bidder.model.mapper.BidMapper.toCloseBid
 import com.prograweb.bidder.model.mapper.BidMapper.toEntity
+import com.prograweb.bidder.model.mapper.BidMapper.toHistoryResponse
 import com.prograweb.bidder.model.mapper.BidMapper.toOpenBid
 import com.prograweb.bidder.model.mapper.BidMapper.toPushBid
 import com.prograweb.bidder.model.mapper.BidMapper.toResponse
@@ -168,22 +169,10 @@ class BidService(
         }
     }
 
-    override fun getBidHistory(publicId: UUID): List<BidHistoryResponse> {
+    override fun getBidHistory(userPublicId: UUID): List<BidResponse> {
         try {
-            val user = userRepository.findByPublicId(publicId) ?: throw Exception("Usuario no encontrado")
-            val bids = bidRepository.findBySuscriptorsPublicId(publicId) ?: throw Exception("Pujas no encontradas")
-
-            val historyBids = bids.map { bid ->
-                BidHistoryResponse(
-                    bidId = bid.publicId.toString(),
-                    winningUser = bid.winningUser?.publicId.toString(),
-                    mount = bid.amount.toDouble(),
-                    date = bid.initBidDate.toString(),
-                    product = bid.productEntity
-                )
-            }
-            val historialPujas = historyBids.sortedByDescending { it.mount }
-            return historialPujas
+            val bids = bidRepository.findBySuscriptorsPublicId(userPublicId).filter { it.initBidDate < Date() }.sortedBy { it.initBidDate }
+            return bids.map { it.toResponse() }
         } catch (e: Exception) {
             throw e
         }

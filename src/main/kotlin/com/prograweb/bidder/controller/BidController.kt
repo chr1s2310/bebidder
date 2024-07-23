@@ -50,7 +50,7 @@ class BidController(@Autowired private val bidServiceInterface: BidServiceInterf
     }
 
     @GetMapping("/history/user/{publicId}")
-    fun getBidHistoryUser(@PathVariable publicId: UUID): ResponseEntity<List<BidHistoryResponse>> {
+    fun getBidHistoryUser(@PathVariable publicId: UUID): ResponseEntity<List<BidResponse>> {
         return ResponseEntity.ok(bidServiceInterface.getBidHistory(publicId))
     }
 
