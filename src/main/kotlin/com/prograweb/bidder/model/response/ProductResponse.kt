@@ -24,5 +24,7 @@ class ProductResponse(
 
         val categoryPublicId: UUID,
 
-        val images: List<String>
+        val images: List<String>,
+
+        val published: Boolean
 )

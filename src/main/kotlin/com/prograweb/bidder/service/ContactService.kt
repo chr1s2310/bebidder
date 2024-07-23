@@ -15,7 +15,9 @@ class ContactService(@Autowired private val contactRepository: ContactRepository
 
     override fun getAllContacs(): List<ContactResponse> {
         try {
-            return contactRepository.findAll().map { it.toResponse() }
+            val contacts = contactRepository.findAll()
+            //return only contacta that are not attended
+            return contacts.filter { !it.attended }.map { it.toResponse() }
         } catch (e: Exception) {
             throw e
         }

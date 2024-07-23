@@ -2,7 +2,6 @@ package com.prograweb.bidder.model.mapper
 
 import com.prograweb.bidder.model.entities.CategoryEntity
 import com.prograweb.bidder.model.entities.ProductEntity
-import com.prograweb.bidder.model.entities.ProductImageEntity
 import com.prograweb.bidder.model.mapper.ProductImageMapper.toStringResponse
 import com.prograweb.bidder.model.request.ProductRequest
 import com.prograweb.bidder.model.response.ProductResponse
@@ -33,7 +32,8 @@ object ProductMapper {
             href = this.href,
             category = this.categoryEntity.name,
                 categoryPublicId = this.categoryEntity.publicId,
-            images = this.images.map { it.toStringResponse() }
+            images = this.images.map { it.toStringResponse() },
+                published = this.bidEntity != null
         )
     }
 

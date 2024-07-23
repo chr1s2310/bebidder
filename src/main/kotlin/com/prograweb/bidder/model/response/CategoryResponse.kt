@@ -10,5 +10,7 @@ class CategoryResponse (
 
         val name: String,
 
-        val products: List<ProductResponse>
+        val products: List<ProductResponse>,
+
+        val productCount: Int? = null
 )

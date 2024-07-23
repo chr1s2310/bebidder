@@ -32,7 +32,8 @@ object CategoryMapper {
             id = this.id!!,
             name = this.name,
             products = emptyList(),
-            publicId = this.publicId
+            publicId = this.publicId,
+                productCount = this.products.size
         )
     }
 }
