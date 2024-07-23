@@ -1,79 +1,71 @@
 package com.prograweb.bidder.controller
 
-import com.paypal.api.payments.Payment
 import com.paypal.base.rest.PayPalRESTException
 import com.prograweb.bidder.model.entities.TransactionEntity
 import com.prograweb.bidder.model.request.PayPalRequest
+import com.prograweb.bidder.repository.TransactionRepository
 import com.prograweb.bidder.service.PayPalService
-import jakarta.validation.Valid
-import lombok.RequiredArgsConstructor
-import lombok.extern.slf4j.Slf4j
-import org.springframework.stereotype.Controller
-import org.springframework.web.servlet.view.RedirectView
-import org.slf4j.LoggerFactory
-import org.springframework.http.HttpStatus
-import org.springframework.http.ResponseEntity
+import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.web.bind.annotation.*
+import java.util.*
 
-@Controller
-@Slf4j
-@RequestMapping("/api/paypal1")
-class PayPalController (private val paypalService: PayPalService){
 
-    private val log = LoggerFactory.getLogger(PayPalController::class.java)
+@RestController
+@RequestMapping("/api/payments")
+class PayPalController (@Autowired private val paypalService: PayPalService, @Autowired private val transactionRepository: TransactionRepository) {
 
-    @PostMapping("/createpayment")
-    fun createPayment(@Valid @RequestBody request: PayPalRequest
-    ): RedirectView {
+    @PostMapping("/pay")
+    fun pay(@RequestBody paymentRequest: PayPalRequest): String {
         try {
-            val cancelUrl = "http://localhost:8082/payment/cancel"
-            val successUrl = "http://localhost:8082/payment/success"
-            println(request)
-            val payment: Payment = paypalService.createPayment(request)
-            println(payment) //
+            val payment = paypalService!!.createPayment(paymentRequest
+            )
             for (links in payment.links) {
-                if (links.rel == "approval_url") {
-                    return RedirectView(links.href)
+                if (links.rel.equals("approval_url")) {
+                    return links.href
                 }
             }
         } catch (e: PayPalRESTException) {
-            log.error("Error occurred:: ", e)
+            e.printStackTrace()
         }
-
-        return RedirectView("/error")
+        return "/"
     }
 
     @GetMapping("/success")
-    fun paymentSuccess(
-        @RequestParam("paymentId") paymentId: String,
-        @RequestParam("PayerID") payerId: String
-    ): String {
-        println ("paymentId: $paymentId, payerId: $payerId")
-        if (paymentId == null || payerId == null) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Invalid payment details").toString()
-        }
-        try {
-            val payment: Payment = paypalService.executePayment(paymentId, payerId)
+    fun successPay(@RequestParam("paymentId") paymentId: String?, @RequestParam("PayerID") payerId: String?): String {
+        println("paymentId: $paymentId, payerId: $payerId")
+        return try {
+            val payment = paypalService.executePayment(paymentId!!, payerId!!)
+
             if (payment.state == "approved") {
-                //val transaction = transactionRequest.toEntity(payment)
-                ResponseEntity.ok("Payment successful")
-            }else {
-                ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Payment not approved")
+                //Transacción en la base de datos
+                    val transaction = TransactionEntity(
+                        paymentId = paymentId,
+                        payerId = payerId,
+                        bidId = UUID.randomUUID(), // Reemplazar con el ID real de la oferta
+                        amount = payment.transactions[0].amount.total.toDouble(),
+                        currency = payment.transactions[0].amount.currency,
+                        state = payment.state,
+                        description = payment.transactions[0].description,
+                        dateCreated = Date().toString(),
+                        userId = UUID.randomUUID(), // Reemplazar con el ID real del usuario,
+                        paymentMethod = "PayPal",
+                        orderId = payment.transactions[0].relatedResources[0].sale.id,
+                    )
+                transactionRepository!!.save<TransactionEntity>(transaction)
+
+                "Pago exitoso"
+            } else {
+                "Error en el pago"
             }
         } catch (e: PayPalRESTException) {
-            log.error("Error occurred:: ", e)
-            ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Payment execution failed")
+            e.printStackTrace()
+            return "Error en el pago"
         }
-        return "paymentSuccess"
+
     }
 
     @GetMapping("/cancel")
-    fun paymentCancel(): String {
-        return "paymentCancel"
-    }
-
-    @GetMapping("/error")
-    fun paymentError(): String {
-        return "paymentError"
+    fun cancelPay(): String {
+        return "Pago cancelado"
     }
 }
