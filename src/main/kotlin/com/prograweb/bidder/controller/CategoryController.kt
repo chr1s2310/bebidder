@@ -18,6 +18,11 @@ class CategoryController(@Autowired private val categoryServiceInterface: Catego
         return ResponseEntity.ok(categoryServiceInterface.getAll())
     }
 
+    @GetMapping("/dropdown")
+    fun getAllDropDown(): ResponseEntity<List<CategoryResponse>> {
+        return ResponseEntity.ok(categoryServiceInterface.getAllDropDown())
+    }
+
     @GetMapping("/{publicId}")
     fun getCategoryById(@PathVariable publicId: UUID): ResponseEntity<CategoryResponse> {
         return ResponseEntity.ok(categoryServiceInterface.getCategory(publicId))

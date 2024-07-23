@@ -25,7 +25,7 @@ class ProductRequest (
         @field:NotNull(message = "El precio del producto es requerido")
         val price: Int,
 
-        val href: String,
+        val href: String? = null,
 
         @field:NotNull(message = "La categoría del producto es requerida")
         val categoryPublicId: UUID,
