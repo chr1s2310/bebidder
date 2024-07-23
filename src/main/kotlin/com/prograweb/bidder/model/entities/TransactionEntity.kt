@@ -47,4 +47,4 @@ data class TransactionEntity (
     @Column(nullable = false)
     var dateCreated: String,
 
-)
+): AuditModel()
