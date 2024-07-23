@@ -15,6 +15,7 @@ import com.prograweb.bidder.model.response.TimeResponse
 import com.prograweb.bidder.repository.BidRepository
 import com.prograweb.bidder.repository.ProductRepository
 import com.prograweb.bidder.repository.UserRepository
+import jakarta.transaction.Transactional
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 import java.time.LocalDateTime
@@ -74,7 +75,7 @@ class BidService(
             throw e
         }
     }
-
+    @Transactional
     override fun saveBid(bidRequest: BidRequest): BidResponse {
         try {
             val product = productRepository.findByPublicId(bidRequest.productPublicId) ?: throw Exception("Producto no encontrado")
@@ -88,7 +89,7 @@ class BidService(
             throw e
         }
     }
-
+    @Transactional
     override fun deleteBid(publicId: UUID) {
         try {
             val bid = bidRepository.findByPublicId(publicId) ?: throw Exception("Puja no encontrada")
@@ -100,7 +101,7 @@ class BidService(
             throw e
         }
     }
-
+    @Transactional
     override fun updateBid(publicId: UUID, bidRequest: BidRequest): BidResponse {
         try {
             val bidEntity = bidRepository.findByPublicId(publicId) ?: throw Exception("Puja no encontrada")
@@ -115,7 +116,7 @@ class BidService(
             throw e
         }
     }
-
+    @Transactional
     override fun closeBid(publicId: UUID): BidResponse {
         try {
             val bid = bidRepository.findByPublicId(publicId) ?: throw Exception("Puja no encontrada")
@@ -143,7 +144,7 @@ class BidService(
             throw e
         }
     }
-
+    @Transactional
     override fun addSuscriptor(publicId: UUID, userPublicId: UUID): BidResponse {
         try {
             val bid = bidRepository.findByPublicId(publicId) ?: throw Exception("Puja no encontrada")

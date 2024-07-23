@@ -6,6 +6,7 @@ import com.prograweb.bidder.model.mapper.ContactMapper.toResponse
 import com.prograweb.bidder.model.request.ContactRequest
 import com.prograweb.bidder.model.response.ContactResponse
 import com.prograweb.bidder.repository.ContactRepository
+import jakarta.transaction.Transactional
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 import java.util.*
@@ -31,7 +32,7 @@ class ContactService(@Autowired private val contactRepository: ContactRepository
             throw e
         }
     }
-
+    @Transactional
     override fun saveContact(contact: ContactRequest): ContactResponse {
         try {
             return contactRepository.save(contact.toEntity()).toResponse()
@@ -39,7 +40,7 @@ class ContactService(@Autowired private val contactRepository: ContactRepository
             throw e
         }
     }
-
+    @Transactional
     override fun updateContact(publicId: UUID): ContactResponse {
         try {
             val contact = contactRepository.findByPublicId(publicId) ?: throw Exception("Contacto no encontrado")

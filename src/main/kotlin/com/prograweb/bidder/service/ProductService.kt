@@ -37,7 +37,7 @@ class ProductService(
             throw e
         }
     }
-
+    @Transactional
     override fun saveProduct(product: ProductRequest): ProductResponse {
         try {
             val categoryEntity = categoryRepository.findByPublicId(product.categoryPublicId) ?: throw Exception("Categoría no encontrada")
@@ -50,7 +50,7 @@ class ProductService(
             throw e
         }
     }
-
+    @Transactional
     override fun deleteProduct(publicId: UUID) {
         try {
             val product = productRepository.findByPublicId(publicId) ?: throw Exception("Producto no encontrado")
@@ -59,7 +59,7 @@ class ProductService(
             throw e
         }
     }
-
+    @Transactional
     override fun updateProduct(publicId: UUID, product: ProductRequest): ProductResponse {
         try {
             val productEntity = productRepository.findByPublicId(publicId) ?: throw Exception("Producto no encontrado")

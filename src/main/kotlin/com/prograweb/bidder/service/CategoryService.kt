@@ -7,6 +7,7 @@ import com.prograweb.bidder.model.mapper.CategoryMapper.toResponse
 import com.prograweb.bidder.model.request.CategoryRequest
 import com.prograweb.bidder.model.response.CategoryResponse
 import com.prograweb.bidder.repository.CategoryRepository
+import jakarta.transaction.Transactional
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 import java.util.UUID
@@ -37,7 +38,7 @@ class CategoryService(@Autowired private val categoryRepository: CategoryReposit
             throw e
         }
     }
-
+    @Transactional
     override fun saveCategory(categoryRequest: CategoryRequest): CategoryResponse {
         try {
             val categoryEntity = categoryRequest.toEntity()
@@ -47,7 +48,7 @@ class CategoryService(@Autowired private val categoryRepository: CategoryReposit
             throw e
         }
     }
-
+    @Transactional
     override fun deleteCategory(publicId: UUID) {
         try {
             val category = categoryRepository.findByPublicId(publicId) ?: throw Exception("Categoría no encontrada")
@@ -56,7 +57,7 @@ class CategoryService(@Autowired private val categoryRepository: CategoryReposit
             throw e
         }
     }
-
+    @Transactional
     override fun updateCategory(publicId: UUID, categoryRequest: CategoryRequest): CategoryResponse {
         try {
             val categoryEntity = categoryRepository.findByPublicId(publicId) ?: throw Exception("Categoría no encontrada")

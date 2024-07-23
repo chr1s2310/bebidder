@@ -9,6 +9,7 @@ import com.prograweb.bidder.model.request.UserRequest
 import com.prograweb.bidder.model.response.AuthResponse
 import com.prograweb.bidder.model.response.UserResponse
 import com.prograweb.bidder.repository.UserRepository
+import jakarta.transaction.Transactional
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
 import org.springframework.stereotype.Service
@@ -44,7 +45,7 @@ class UserService(
             throw e
         }
     }
-
+    @Transactional
     override fun registerUser(user: UserRequest): UserResponse {
         try {
             userRepository.findByUsername(user.username)?.let {
