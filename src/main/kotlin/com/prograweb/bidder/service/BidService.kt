@@ -1,5 +1,6 @@
 package com.prograweb.bidder.service
 
+import com.prograweb.bidder.model.mapper.BidMapper.toAddSuscriptor
 import com.prograweb.bidder.model.mapper.BidMapper.toCloseBid
 import com.prograweb.bidder.model.mapper.BidMapper.toEntity
 import com.prograweb.bidder.model.mapper.BidMapper.toPushBid
@@ -41,6 +42,8 @@ class BidService(
         try {
             val product = productRepository.findByPublicId(bidRequest.productPublicId) ?: throw Exception("Producto no encontrado")
             val bidEntity = bidRequest.toEntity(product)
+            product.href = "/item/${bidEntity.publicId}"
+            productRepository.save(product)
             val bidSaved = bidRepository.save(bidEntity)
             return bidSaved.toResponse()
         } catch (e: Exception) {
@@ -95,6 +98,18 @@ class BidService(
         try {
             val bids = bidRepository.findBySuscriptorsPublicId(userPublicId)
             return bids.map { it.toResponse() }
+        } catch (e: Exception) {
+            throw e
+        }
+    }
+
+    override fun addSuscriptor(publicId: UUID, userPublicId: UUID): BidResponse {
+        try {
+            val bid = bidRepository.findByPublicId(publicId) ?: throw Exception("Puja no encontrada")
+            val user = userRepository.findByPublicId(userPublicId) ?: throw Exception("Usuario no encontrado")
+            val bidUpdated = bid.toAddSuscriptor(user)
+            val bidSaved = bidRepository.save(bidUpdated)
+            return bidSaved.toResponse()
         } catch (e: Exception) {
             throw e
         }

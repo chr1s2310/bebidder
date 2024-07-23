@@ -42,4 +42,14 @@ class BidController(@Autowired private val bidServiceInterface: BidServiceInterf
     fun closeBid(@PathVariable publicId: UUID): ResponseEntity<BidResponse> {
         return ResponseEntity.ok(bidServiceInterface.closeBid(publicId))
     }
+
+    @GetMapping("/user/{publicId}")
+    fun getBidsByUser(@PathVariable publicId: UUID): ResponseEntity<List<BidResponse>> {
+        return ResponseEntity.ok(bidServiceInterface.getBidsByUser(publicId))
+    }
+
+    @PutMapping("/{publicId}/suscriptor/{userPublicId}")
+    fun addSuscriptor(@PathVariable publicId: UUID, @PathVariable userPublicId: UUID): ResponseEntity<BidResponse> {
+        return ResponseEntity.ok(bidServiceInterface.addSuscriptor(publicId, userPublicId))
+    }
 }

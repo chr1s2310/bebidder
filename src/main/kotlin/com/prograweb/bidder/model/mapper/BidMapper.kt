@@ -48,4 +48,9 @@ object BidMapper {
         this.closed = true
         return this
     }
+
+    fun BidEntity.toAddSuscriptor(userEntity: UserEntity) : BidEntity {
+        this.suscriptors.add(userEntity)
+        return this
+    }
 }

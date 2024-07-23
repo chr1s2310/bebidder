@@ -35,6 +35,6 @@ data class BidEntity (
         var initBidDate: LocalDateTime,
 
         @ManyToMany(mappedBy = "suscriptions")
-        var suscriptors: List<UserEntity> = mutableListOf()
+        var suscriptors: MutableList<UserEntity> = mutableListOf()
 
 ) : AuditModel()
