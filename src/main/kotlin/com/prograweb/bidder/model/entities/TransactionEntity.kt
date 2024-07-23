@@ -18,10 +18,10 @@ data class TransactionEntity (
     val orderId: String,
 
     @Column(nullable = false)
-    val userId: String,
+    val userId: UUID,
 
     @Column(nullable = false)
-    var bidId: String,
+    var bidId: UUID,
 
     @Column(nullable = false)
     var paymentId: String,
@@ -43,9 +43,6 @@ data class TransactionEntity (
 
     @Column(nullable = false)
     var paymentMethod: String,
-
-    @Column(nullable = false)
-    var status: String,
 
     @Column(nullable = false)
     var dateCreated: String,

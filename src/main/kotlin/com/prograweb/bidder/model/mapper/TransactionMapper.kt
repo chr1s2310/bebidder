@@ -13,7 +13,6 @@ object TransactionMapper {
         return TransactionEntity(
             orderId = payment.transactions[0].relatedResources[0].sale.id,
             amount = payment.transactions[0].amount.total.toDouble(),
-            status = payment.transactions[0].relatedResources[0].sale.state,
             currency = payment.transactions[0].amount.currency,
             dateCreated = payment.transactions[0].relatedResources[0].sale.createTime,
             description = payment.transactions[0].description,
@@ -21,7 +20,7 @@ object TransactionMapper {
             state = payment.state,
             paymentId = payment.id,
             payerId = payment.payer.payerInfo.payerId,
-            bidId = this.userId,
+            bidId = this.bidId,
             userId = this.userId
         )
     }

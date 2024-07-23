@@ -18,7 +18,7 @@ class TransactionRequest (
 
     @field:NotNull(message = "El identificador del usuario es requerido")
     @field:NotBlank(message = "El identificador del usuario no puede estar vacío")
-    val userId: String,
+    val userId: UUID,
 
     @field:NotNull(message = "El identificador del producto es requerido")
     @field:NotBlank(message = "El identificador del proyecto no puede estar vacío")
@@ -45,6 +45,7 @@ class TransactionRequest (
     @field:NotBlank(message = "El estado no puede estar vacío")
     var state: String,
 
+    var bidId: UUID,
 
     var description: String,
 
