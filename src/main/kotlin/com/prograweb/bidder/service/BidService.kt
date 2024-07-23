@@ -108,6 +108,8 @@ class BidService(
             val bid = bidRepository.findByPublicId(publicId) ?: throw Exception("Puja no encontrada")
             val user = userRepository.findByPublicId(userPublicId) ?: throw Exception("Usuario no encontrado")
             val bidUpdated = bid.toAddSuscriptor(user)
+            user.suscriptions.add(bid)
+            userRepository.save(user)
             val bidSaved = bidRepository.save(bidUpdated)
             return bidSaved.toResponse()
         } catch (e: Exception) {
