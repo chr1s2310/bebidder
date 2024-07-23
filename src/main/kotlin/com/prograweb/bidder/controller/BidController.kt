@@ -1,6 +1,7 @@
 package com.prograweb.bidder.controller
 
 import com.prograweb.bidder.model.request.BidRequest
+import com.prograweb.bidder.model.response.BidHistoryResponse
 import com.prograweb.bidder.model.response.BidResponse
 import com.prograweb.bidder.service.BidServiceInterface
 import jakarta.validation.Valid
@@ -46,6 +47,11 @@ class BidController(@Autowired private val bidServiceInterface: BidServiceInterf
     @GetMapping("/user/{publicId}")
     fun getBidsByUser(@PathVariable publicId: UUID): ResponseEntity<List<BidResponse>> {
         return ResponseEntity.ok(bidServiceInterface.getBidsByUser(publicId))
+    }
+
+    @GetMapping("/history/user/{publicId}")
+    fun getBidHistoryUser(@PathVariable publicId: UUID): ResponseEntity<List<BidHistoryResponse>> {
+        return ResponseEntity.ok(bidServiceInterface.getBidHistory(publicId))
     }
 
     @PutMapping("/{publicId}/suscriptor/{userPublicId}")
