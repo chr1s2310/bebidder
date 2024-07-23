@@ -160,7 +160,7 @@ class BidService(
         try {
             val bids = bidRepository.findAll()
             val user = userRepository.findByPublicId(userPublicId) ?: throw Exception("Usuario no encontrado")
-            val bidsNoSuscribed = bids.filter { !user.suscriptions.contains(it) }.filter { it.initBidDate > Date() }
+            val bidsNoSuscribed = bids.filter { !user.suscriptions.contains(it) }.filter { it.initBidDate > Date() || !it.closed }.sortedBy { it.initBidDate }
             return bidsNoSuscribed.map { it.toResponse() }
         } catch (e: Exception) {
             throw e
