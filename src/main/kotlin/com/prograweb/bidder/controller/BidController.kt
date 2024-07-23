@@ -52,4 +52,9 @@ class BidController(@Autowired private val bidServiceInterface: BidServiceInterf
     fun addSuscriptor(@PathVariable publicId: UUID, @PathVariable userPublicId: UUID): ResponseEntity<BidResponse> {
         return ResponseEntity.ok(bidServiceInterface.addSuscriptor(publicId, userPublicId))
     }
+
+    @GetMapping("/user/{publicId}/no-suscribed")
+    fun getBidsByUserNoSuscribed(@PathVariable publicId: UUID): ResponseEntity<List<BidResponse>> {
+        return ResponseEntity.ok(bidServiceInterface.getBidsByUserNoSuscribed(publicId))
+    }
 }

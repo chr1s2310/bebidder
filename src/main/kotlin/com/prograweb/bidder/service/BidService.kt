@@ -12,6 +12,8 @@ import com.prograweb.bidder.repository.ProductRepository
 import com.prograweb.bidder.repository.UserRepository
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
+import java.time.LocalDateTime
+import java.time.ZoneId
 import java.util.*
 
 @Service
@@ -96,7 +98,7 @@ class BidService(
 
     override fun getBidsByUser(userPublicId: UUID): List<BidResponse> {
         try {
-            val bids = bidRepository.findBySuscriptorsPublicId(userPublicId)
+            val bids = bidRepository.findBySuscriptorsPublicId(userPublicId).filter { it.initBidDate > Date() || !it.closed }.sortedBy { it.initBidDate }
             return bids.map { it.toResponse() }
         } catch (e: Exception) {
             throw e
@@ -116,4 +118,19 @@ class BidService(
             throw e
         }
     }
+
+    override fun getBidsByUserNoSuscribed(userPublicId: UUID): List<BidResponse> {
+        try {
+            val bids = bidRepository.findAll()
+            val user = userRepository.findByPublicId(userPublicId) ?: throw Exception("Usuario no encontrado")
+            val bidsNoSuscribed = bids.filter { !user.suscriptions.contains(it) }.filter { it.initBidDate > Date() }
+            return bidsNoSuscribed.map { it.toResponse() }
+        } catch (e: Exception) {
+            throw e
+        }
+    }
+}
+
+private operator fun LocalDateTime.compareTo(date: Date): Int {
+    return this.compareTo(date.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime())
 }

@@ -23,4 +23,6 @@ interface BidServiceInterface {
     fun getBidsByUser(userPublicId: UUID): List<BidResponse>
 
     fun addSuscriptor(publicId: UUID, userPublicId: UUID): BidResponse
+
+    fun getBidsByUserNoSuscribed(userPublicId: UUID): List<BidResponse>
 }
