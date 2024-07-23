@@ -9,6 +9,8 @@ class UserResponse (
 
     val publicId: UUID,
 
+    val profilePicture: String? = null,
+
     val email: String,
 
     val name: String,

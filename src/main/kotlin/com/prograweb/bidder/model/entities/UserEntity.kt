@@ -14,6 +14,9 @@ data class UserEntity (
     @Column(nullable = false)
     var publicId: UUID = UUID.randomUUID(),
 
+    @Column(columnDefinition = "TEXT")
+    var profilePicture: String? = null,
+
     @Column(nullable = false, unique = true)
     var email: String,
 

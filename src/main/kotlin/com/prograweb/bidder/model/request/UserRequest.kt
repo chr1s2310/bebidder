@@ -9,6 +9,8 @@ class UserRequest (
     @field:NotBlank(message = "El nombre de usuario no puede estar vacío")
     val name: String,
 
+    val profilePicture: String?,
+
     @field:NotNull(message = "El apellido es requerido")
     @field:NotBlank(message = "El apellido no puede estar vacío")
     val lastname: String,

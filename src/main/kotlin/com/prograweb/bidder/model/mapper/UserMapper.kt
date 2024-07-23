@@ -15,7 +15,8 @@ object UserMapper {
             username = this.username,
             email = this.email,
             password = passwordEncoder.encode(this.password),
-                active = true
+                active = true,
+                profilePicture = this.profilePicture
         )
     }
 
