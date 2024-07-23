@@ -9,5 +9,5 @@ interface AuthServiceInterface {
 
     fun login(userLoginRequest: UserLoginRequest): Pair<UserResponse?, AuthResponse>
     fun register(user: UserRequest): Pair<UserResponse?, AuthResponse>
-    fun logout(): AuthResponse
+    fun logout():AuthResponse
 }

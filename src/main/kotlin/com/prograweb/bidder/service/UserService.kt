@@ -16,7 +16,7 @@ import java.util.UUID
 
 @Service
 class UserService(
-        @Autowired private val userRepository: UserRepository,@Autowired private val jwtService: JwtServiceInterface,
+        @Autowired private val userRepository: UserRepository, @Autowired private val jwtService: JwtServiceInterface,
         private val passwordEncoder: BCryptPasswordEncoder
 ): UserServiceInterface {
 
@@ -54,7 +54,7 @@ class UserService(
         return userRepository.save(userEntity).toResponse()
     }
 
-    override fun updateUser(publicId: UUID, user: UserRequest): Pair<UserResponse?, AuthResponse>  {
+    override fun updateUser(publicId: UUID, user: UserRequest): Pair<UserResponse?, AuthResponse> {
         val userEnt = userRepository.findByPublicId(publicId) ?: throw Exception("Usuario no encontrado")
         val userEntityUpdate = user.toEntityUpdated(userEnt)
         return Pair( userRepository.save(userEntityUpdate).toResponse(), AuthResponse(jwtService.generateToken(user.username)))

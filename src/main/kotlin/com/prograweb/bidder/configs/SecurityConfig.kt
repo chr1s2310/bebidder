@@ -1,7 +1,7 @@
 package com.prograweb.bidder.configs
 
 import com.prograweb.bidder.security.JwtAuthenticationFilter
-import com.prograweb.bidder.service.CustomUserDetailsService
+import com.prograweb.bidder.service.CustUserDetailsService
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.security.authentication.AuthenticationManager
@@ -19,7 +19,7 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher.antMa
 
 @Configuration
 @EnableWebSecurity
-class SecurityConfig (private val jwtAuthFilter: JwtAuthenticationFilter,private val userDetailsService: CustomUserDetailsService){
+class SecurityConfig (private val jwtAuthFilter: JwtAuthenticationFilter,private val userDetailsService: CustUserDetailsService){
 
     @Bean
     fun securityFilterChain(http: HttpSecurity): SecurityFilterChain {
