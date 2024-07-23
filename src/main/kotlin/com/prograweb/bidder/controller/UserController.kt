@@ -1,5 +1,6 @@
 package com.prograweb.bidder.controller
 
+import com.prograweb.bidder.model.entities.UserEntity
 import com.prograweb.bidder.model.request.UserLoginRequest
 import com.prograweb.bidder.model.request.UserRequest
 import com.prograweb.bidder.model.response.AuthResponse
@@ -37,17 +38,23 @@ class UserController ( @Autowired private val authService: AuthServiceInterface,
     }
 
     @PutMapping("/{publicId}")
-    fun updateUser(@PathVariable publicId: UUID, @Valid @RequestBody user: UserRequest): ResponseEntity<Pair<UserResponse?, AuthResponse>> {
+    fun updateUser(@PathVariable publicId: UUID, @Valid @RequestBody user: UserRequest): ResponseEntity<Pair<UserResponse?, AuthResponse>>{
         return ResponseEntity.ok(userService.updateUser(publicId, user))
     }
 
     @PostMapping("/login")
     fun loginUser(@Valid @RequestBody user: UserLoginRequest): ResponseEntity<Pair<UserResponse?, AuthResponse>> {
-        return ResponseEntity.ok(authService.login(user))
+        val authResponse = authService.login(user)
+        return ResponseEntity.ok((authResponse))
     }
 
     @PostMapping("/signup")
     fun registerUser(@Valid @RequestBody user: UserRequest): ResponseEntity<Pair<UserResponse?, AuthResponse>> {
         return ResponseEntity.ok(authService.register(user))
+    }
+    @PostMapping("/logout")
+    fun logoutUser(): ResponseEntity<Any> {
+        authService.logout()
+        return ResponseEntity.ok("Cierre de sesión exitoso")
     }
 }
